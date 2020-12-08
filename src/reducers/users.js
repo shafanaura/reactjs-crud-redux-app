@@ -1,9 +1,11 @@
-import { GET_USERS_LIST, GET_USER_LIST } from "../actions/userAction";
+import { GET_USERS_LIST, GET_USER_DETAIL } from "../actions/userAction";
 
 let initialState = {
 	title: "Learn CRUD Redux",
 	getUsersList: false,
 	errorUsersList: false,
+	getUserDetail: false,
+	errorUserDetail: false,
 };
 
 const users = (state = initialState, action) => {
@@ -13,6 +15,12 @@ const users = (state = initialState, action) => {
 				...state,
 				getUsersList: action.payload.data,
 				errorUsersList: action.payload.errorMessage,
+			};
+		case GET_USER_DETAIL:
+			return {
+				...state,
+				getUserDetail: action.payload.data,
+				errorUserDetail: action.payload.errorMessage,
 			};
 		default:
 			break;
