@@ -125,6 +125,22 @@ export const putUserUpdate = (data, id) => {
 	};
 };
 
+export const deleteUser = (id) => {
+	return (dispatch) => {
+		axios
+			.delete(
+				"https://my-json-server.typicode.com/shafanaura/reactjs-crud-redux/users/" +
+					id,
+			)
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+};
+
 export const deleteDataUser = () => {
 	return (dispatch) => {
 		dispatch({

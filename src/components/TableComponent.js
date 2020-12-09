@@ -12,63 +12,28 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import swal from "sweetalert";
+import { deleteUser } from "../actions/userAction";
 
 const { SearchBar } = Search;
 
-const columns = [
-	{
-		dataField: "id",
-		text: "ID",
-		sort: true,
-		headerStyle: () => {
-			return { width: "5%" };
-		},
-	},
-	{
-		dataField: "nama",
-		text: "Nama",
-		sort: true,
-	},
-	{
-		dataField: "alamat",
-		text: "Alamat",
-		sort: true,
-	},
-	{
-		dataField: "umur",
-		text: "Umur",
-		sort: true,
-		headerStyle: () => {
-			return { width: "10%" };
-		},
-	},
-	{
-		dataField: "link",
-		text: "Action",
-		formatter: (rowContent, row) => {
-			return (
-				<div>
-					<Link to={"detail/" + row.id}>
-						<Button color="dark" className="mr-2">
-							<FontAwesomeIcon icon={faInfo} />
-							Detail
-						</Button>
-					</Link>
-					<Link to={"edit/" + row.id}>
-						<Button color="warning" className="mr-2">
-							<FontAwesomeIcon icon={faEdit} />
-							Edit
-						</Button>
-					</Link>
-					<Button color="danger" className="mr-2">
-						<FontAwesomeIcon icon={faTrash} />
-						Delete
-					</Button>
-				</div>
-			);
-		},
-	},
-];
+const handleClick = (dispatch, id) => {
+	swal({
+		title: "Apakah anda yakin akan menghapus data ini?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+	}).then((willDelete) => {
+		if (willDelete) {
+			dispatch(deleteUser(id));
+			swal("Data user sukses dihapus", {
+				icon: "success",
+			});
+		} else {
+			swal("Data gagal dihapus");
+		}
+	});
+};
 
 const defaultSorted = [
 	{
@@ -85,6 +50,65 @@ const mapStateToProps = (state) => {
 };
 
 const TableComponent = (props) => {
+	const columns = [
+		{
+			dataField: "id",
+			text: "ID",
+			sort: true,
+			headerStyle: () => {
+				return { width: "5%" };
+			},
+		},
+		{
+			dataField: "nama",
+			text: "Nama",
+			sort: true,
+		},
+		{
+			dataField: "alamat",
+			text: "Alamat",
+			sort: true,
+		},
+		{
+			dataField: "umur",
+			text: "Umur",
+			sort: true,
+			headerStyle: () => {
+				return { width: "10%" };
+			},
+		},
+		{
+			dataField: "link",
+			text: "Action",
+			formatter: (rowContent, row) => {
+				return (
+					<div>
+						<Link to={"detail/" + row.id}>
+							<Button color="dark" className="mr-2">
+								<FontAwesomeIcon icon={faInfo} />
+								Detail
+							</Button>
+						</Link>
+						<Link to={"edit/" + row.id}>
+							<Button color="warning" className="mr-2">
+								<FontAwesomeIcon icon={faEdit} />
+								Edit
+							</Button>
+						</Link>
+						<Button
+							color="danger"
+							className="mr-2"
+							onClick={() => handleClick(props.dispatch, row.id)}
+						>
+							<FontAwesomeIcon icon={faTrash} />
+							Delete
+						</Button>
+					</div>
+				);
+			},
+		},
+	];
+
 	return (
 		<div>
 			<Container>
